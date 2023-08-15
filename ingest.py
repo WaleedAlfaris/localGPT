@@ -1,6 +1,8 @@
 import logging
 import os
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from pathlib import Path
+from time import sleep
 
 import click
 import torch
@@ -21,13 +23,22 @@ from constants import (
 
 def load_single_document(file_path: str) -> Document:
     # Loads a single document from a file path
-    file_extension = os.path.splitext(file_path)[1]
-    loader_class = DOCUMENT_MAP.get(file_extension)
-    if loader_class:
-        loader = loader_class(file_path)
-    else:
-        raise ValueError("Document type is undefined")
-    return loader.load()[0]
+    file_extension = Path(file_path).suffix
+    try:
+        loader_class = DOCUMENT_MAP.get(file_extension)
+        if loader_class:
+            loader = loader_class(file_path)
+        else:
+            raise ValueError("Document type is undefined")
+        return loader.load()[0]
+    except FileNotFoundError:
+        loader_class = DOCUMENT_MAP.get(file_extension)
+        if loader_class:
+            loader = loader_class(file_path)
+        else:
+            raise ValueError("Document type is undefined")
+        sleep(5)
+        return loader.load()[0]
 
 
 def load_document_batch(filepaths):
@@ -44,14 +55,11 @@ def load_document_batch(filepaths):
 
 def load_documents(source_dir: str) -> list[Document]:
     # Loads all documents from the source documents directory
-    all_files = os.listdir(source_dir)
     paths = []
-    for file_path in all_files:
-        file_extension = os.path.splitext(file_path)[1]
-        source_file_path = os.path.join(source_dir, file_path)
-        if file_extension in DOCUMENT_MAP.keys():
-            paths.append(source_file_path)
-
+    for file in Path(source_dir).rglob('*'):
+        if file.is_file() and file.name != '.DS_Store':
+            if file.suffix in DOCUMENT_MAP.keys():
+                paths.append(str(file))
     # Have at least one worker and at most INGEST_THREADS workers
     n_workers = min(INGEST_THREADS, max(len(paths), 1))
     chunksize = round(len(paths) / n_workers)
