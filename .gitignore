@@ -1,6 +1,8 @@
 # Ignore vscode
 /.vscode
 /DB
+/SOURCE_DOCUMENTS
+/models
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -29,8 +31,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-SOURCE_DOCUMENTS/
-models/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
