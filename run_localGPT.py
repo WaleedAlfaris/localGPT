@@ -42,7 +42,10 @@ def load_model(device_type, model_id, model_basename=None, local_model: bool = F
     Raises:
         ValueError: If an unsupported model or device type is provided.
     """
-    logging.info(f"Loading Model: {model_id}, on: {device_type}")
+    if local_model:
+        logging.info(f'Loading local model at {local_model_path}')
+    else:
+        logging.info(f"Loading Model: {model_id}, on: {device_type}")
     logging.info("This action can take a few minutes!")
 
     if model_basename is not None:
