@@ -220,7 +220,9 @@ def main(device_type, show_sources, local_model: bool = False, local_model_path:
     prompt = PromptTemplate(input_variables=["history", "context", "question"], template=template)
     memory = ConversationBufferMemory(input_key="question", memory_key="history")
 
-    llm = load_model(device_type, model_id=MODEL_ID, model_basename=MODEL_BASENAME)
+    llm = load_model(
+        device_type, model_id=MODEL_ID, model_basename=MODEL_BASENAME, local_model=local_model,
+        local_model_path=local_model_path)
 
     qa = RetrievalQA.from_chain_type(
         llm=llm,
