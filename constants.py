@@ -4,7 +4,8 @@ import os
 from chromadb.config import Settings
 
 # https://python.langchain.com/en/latest/modules/indexes/document_loaders/examples/excel.html?highlight=xlsx#microsoft-excel
-from langchain.document_loaders import CSVLoader, PDFMinerLoader, TextLoader, UnstructuredExcelLoader, Docx2txtLoader
+from langchain.document_loaders import (
+    CSVLoader, PDFMinerLoader, TextLoader, UnstructuredExcelLoader, UnstructuredWordDocumentLoader)
 
 # load_dotenv()
 ROOT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
@@ -31,8 +32,8 @@ DOCUMENT_MAP = {
     ".csv": CSVLoader,
     ".xls": UnstructuredExcelLoader,
     ".xlsx": UnstructuredExcelLoader,
-    ".docx": Docx2txtLoader,
-    ".doc": Docx2txtLoader,
+    ".docx": UnstructuredWordDocumentLoader,
+    ".doc": UnstructuredWordDocumentLoader,
 }
 
 # Default Instructor Model
