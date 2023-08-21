@@ -50,6 +50,7 @@ def load_model(device_type, model_id, model_basename=None, local_model: bool = F
     logging.info("This action can take a few minutes!")
 
     if model_basename is not None:
+        # if "ggml" in model_basename:
         if ".ggml" in model_basename:
             logging.info("Using Llamacpp for GGML quantized models")
             if local_model:
@@ -210,7 +211,10 @@ def main(device_type, show_sources, local_model: bool = False, local_model_path:
         embedding_function=embeddings,
         client_settings=CHROMA_SETTINGS,
     )
-    retriever = db.as_retriever()
+    # retriever = db.as_retriever(search_kwargs={"k": 4})
+    retriever = db.as_retriever(search_type='mmr', search_kwargs={"mmr_threshold": 1})
+    # retriever = db.as_retriever(search_type='mmr', search_kwargs={"k": target_source_chunks})
+    # retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": .5})
 
     template = """Use the following pieces of context to answer the question at the end. If you don't know the answer,\
     just say that you don't know, don't try to make up an answer.
