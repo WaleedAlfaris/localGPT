@@ -9,6 +9,7 @@ from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.llms import HuggingFacePipeline, LlamaCpp
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
+import time
 
 # from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.vectorstores import Chroma
@@ -240,10 +241,12 @@ def main(device_type, show_sources, local_model: bool = False, local_model_path:
         if query == "exit":
             break
         # Get the answer from the chain
+        start = time.time()
         res = qa(query)
         answer, docs = res["result"], res["source_documents"]
 
         # Print the result
+        print(f'Time: {time.time() - start}')
         print("\n\n> Question:")
         print(query)
         print("\n> Answer:")
