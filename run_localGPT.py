@@ -212,8 +212,9 @@ def main(device_type, show_sources, local_model: bool = False, local_model_path:
         client_settings=CHROMA_SETTINGS,
     )
     # retriever = db.as_retriever(search_kwargs={"k": 4})
-    retriever = db.as_retriever(search_type='mmr', search_kwargs={"mmr_threshold": 1})
-    # retriever = db.as_retriever(search_type='mmr', search_kwargs={"k": target_source_chunks})
+    retriever = db.as_retriever(search_type='mmr', search_kwargs={"k": 4})
+    # retriever = db.as_retriever(search_type='mmr', search_kwargs={"mmr_threshold": 1})
+    # retriever = db.as_retriever(search_type='mmr', search_kwargs={"k": 4})
     # retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": .5})
 
     template = """Use the following pieces of context to answer the question at the end. If you don't know the answer,\
