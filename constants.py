@@ -45,8 +45,8 @@ EMBEDDING_MODEL_NAME = "hkunlp/instructor-large"
 # Select the Model ID and model_basename
 # load the LLM for generating Natural Language responses
 
-MODEL_ID = "TheBloke/Llama-2-7B-Chat-GGML"
-MODEL_BASENAME = "llama-2-7b-chat.ggmlv3.q4_0.bin"
+# MODEL_ID = "TheBloke/Llama-2-7B-Chat-GGML"
+# MODEL_BASENAME = "llama-2-7b-chat.ggmlv3.q4_0.bin"
 
 # for HF models
 # MODEL_ID = "TheBloke/vicuna-7B-1.1-HF"
@@ -69,11 +69,13 @@ MODEL_BASENAME = "llama-2-7b-chat.ggmlv3.q4_0.bin"
 # MODEL_BASENAME = "WizardLM-7B-uncensored-GPTQ-4bit-128g.compat.no-act-order.safetensors"
 
 # for GGML (quantized cpu+gpu+mps) models - check if they support llama.cpp
-# MODEL_ID = "TheBloke/wizard-vicuna-13B-GGML"
-# MODEL_BASENAME = "wizard-vicuna-13B.ggmlv3.q4_0.bin"
+MODEL_ID = "TheBloke/wizard-vicuna-13B-GGML"
+MODEL_BASENAME = "wizard-vicuna-13B.ggmlv3.q4_0.bin"
+# MODEL_ID = "eachadea/ggml-vicuna-13b-1.1"
+# MODEL_BASENAME = "ggml-vic13b-q5_1.bin"
 # MODEL_BASENAME = "wizard-vicuna-13B.ggmlv3.q6_K.bin"
 # MODEL_BASENAME = "wizard-vicuna-13B.ggmlv3.q2_K.bin"
 # MODEL_ID = "TheBloke/orca_mini_3B-GGML"
 # MODEL_BASENAME = "orca-mini-3b.ggmlv3.q4_0.bin"
-
-
+# MODEL_ID = "orel12/ggml-gpt4all-j-v1.3-groovy"
+# MODEL_BASENAME = "ggml-gpt4all-j-v1.3-groovy.bin"
