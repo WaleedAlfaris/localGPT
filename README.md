@@ -15,6 +15,25 @@ Built with [LangChain](https://github.com/hwchase17/langchain) and [Vicuna-7B](h
 
 # Environment Setup
 
+## Mac ARM Setup
+If running a Mac Book with M1 chip, follow these steps, otherwise proceed to **Normal Setup**
+
+Set installer as executable
+```shell
+chmod u+x mac_arm_installation.sh
+```
+
+Run installer
+```shell
+./mac_arm_installation.sh
+```
+
+Activate env
+```shell
+conda activate localGPT
+```
+
+## Normal Setup
 Install conda
 
 ```shell
