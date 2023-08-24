@@ -9,6 +9,8 @@ from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.llms import HuggingFacePipeline, LlamaCpp
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
+from langchain.retrievers.self_query.base import SelfQueryRetriever
+from langchain.chains.query_constructor.base import AttributeInfo
 import time
 
 # from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
@@ -211,10 +213,11 @@ def main(device_type, show_sources, local_model: bool = False, local_model_path:
         embedding_function=embeddings,
         client_settings=CHROMA_SETTINGS,
     )
+
     # retriever = db.as_retriever(search_kwargs={"k": 4})
     # retriever = db.as_retriever(search_type='mmr', search_kwargs={"k": 4})
-    # retriever = db.as_retriever(search_type='mmr', search_kwargs={"mmr_threshold": 0.95}) # !BEST
-    retriever = db.as_retriever(search_type='mmr', search_kwargs={"mmr_threshold": 0.96})
+    # retriever = db.as_retriever(search_type='mmr', search_kwargs={"mmr_threshold": 0.95})  # !BEST
+    # retriever = db.as_retriever(search_type='mmr', search_kwargs={"mmr_threshold": 0.96})
     # retriever = db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"score_threshold": .5})
 
     template = """Use the following pieces of context to answer the question at the end. If you don't know the answer,\
@@ -232,6 +235,30 @@ def main(device_type, show_sources, local_model: bool = False, local_model_path:
     llm = load_model(
         device_type, model_id=MODEL_ID, model_basename=MODEL_BASENAME, local_model=local_model,
         local_model_path=local_model_path)
+
+    metadata_field_info = [
+        AttributeInfo(
+            name='source',
+            description="The path to the document which includes the country name for the document."
+            " In the example '/Users/waleed/Documents/WSP/Projects/localGPT/SOURCE_DOCUMENTS/United Kingdom/News/"
+            "TheNationalNews/regulation/Subsidies hurt Saudi budget aviation, flynas chief says.txt',"
+            " the country is 'United Kingdom'.",
+            type='string'
+        ),
+        AttributeInfo(
+            name="page",
+            description="The page from the document",
+            type="integer",
+        )
+    ]
+
+    retriever = SelfQueryRetriever.from_llm(
+        llm=llm,
+        vectorstore=db,
+        document_contents='News, policies, and laws for various countries',
+        metadata_field_info=metadata_field_info,
+        verbose=True
+    )
 
     qa = RetrievalQA.from_chain_type(
         llm=llm,

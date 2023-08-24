@@ -15,6 +15,7 @@ auto-gptq==0.2.2
 docx2txt
 unstructured
 python-docx
+lark==1.1.7
 
 # Utilities
 urllib3==1.26.6
